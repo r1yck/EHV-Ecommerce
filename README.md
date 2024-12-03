@@ -11,7 +11,7 @@ Este projeto consiste em um sistema completo de **E-commerce** para o gerenciame
   /controller   -> Contém os controladores das rotas
   /repository   -> Implementa as consultas ao banco de dados
   /route        -> Define as rotas da aplicação
-  /services     -> Regras de negócios (opcional)
+  /services     -> Contém as regras de negócios (agora presente para manipulação de dados)
   /node_modules -> Dependências do projeto (ignorado no Git)
   server.js     -> Arquivo principal para execução do servidor
 
@@ -115,22 +115,22 @@ npx react-native run-android   # ou run-ios, dependendo da plataforma
 ### **Backend (API Restful)**
 
 #### **Clientes**
-- **GET** `/clientes` - Lista todos os clientes.
-- **POST** `/clientes` - Cria um novo cliente.
-- **PUT** `/clientes/:id` - Atualiza um cliente existente.
-- **DELETE** `/clientes/:id` - Remove um cliente.
+- **GET** `/clientes` - Lista todos os clientes. (Chama o `clienteService` que utiliza o `clienteRepository` para buscar os dados)
+- **POST** `/clientes` - Cria um novo cliente. (Utiliza o `clienteService` para criar e validar os dados antes de salvar no banco)
+- **PUT** `/clientes/:id` - Atualiza um cliente existente. (Chama o `clienteService` para fazer a atualização)
+- **DELETE** `/clientes/:id` - Remove um cliente. (Chama o `clienteService` para deletar o cliente)
 
 #### **Produtos**
-- **GET** `/produtos` - Lista todos os produtos.
-- **POST** `/produtos` - Cria um novo produto.
-- **PUT** `/produtos/:id` - Atualiza um produto existente.
-- **DELETE** `/produtos/:id` - Remove um produto.
+- **GET** `/produtos` - Lista todos os produtos. (Chama o `produtoService` que utiliza o `produtoRepository`)
+- **POST** `/produtos` - Cria um novo produto. (Chama o `produtoService` para validar e salvar o produto)
+- **PUT** `/produtos/:id` - Atualiza um produto existente. (Usa o `produtoService`)
+- **DELETE** `/produtos/:id` - Remove um produto. (Chama o `produtoService`)
 
 #### **Compras**
-- **GET** `/compras` - Lista todas as compras.
-- **POST** `/compras` - Registra uma nova compra.
-- **PUT** `/compras/:id` - Atualiza uma compra existente.
-- **DELETE** `/compras/:id` - Remove uma compra.
+- **GET** `/compras` - Lista todas as compras. (Chama o `compraService` que usa o `compraRepository`)
+- **POST** `/compras` - Registra uma nova compra. (Utiliza o `compraService` para gerenciar o processo)
+- **PUT** `/compras/:id` - Atualiza uma compra existente. (Usa o `compraService`)
+- **DELETE** `/compras/:id` - Remove uma compra. (Chama o `compraService` para deletar a compra)
 
 ### **Frontend Web (Next.js)**
 A interface Web, construída com **Next.js**, permite a interação com a API através de páginas dinâmicas para gerenciar **clientes**, **produtos** e **compras** de forma eficiente e intuitiva.
@@ -143,7 +143,7 @@ A aplicação mobile, desenvolvida com **React Native**, oferece uma experiênci
 ## **🛠️ Como Testar a API**
 
 1. Utilize **Postman** ou **Insomnia** para testar os endpoints da API.
-2. Para testar **POST, PUT e DELETE**, envie o body no formato JSON.
+2. Para testar **POST, PUT e DELETE**, envie o body no formato JSON. **Lembre-se de que certas validações, como verificação de unicidade de email ou idade mínima, estão sendo feitas diretamente no serviço**, então um erro será retornado caso algum critério não seja atendido.
 
 ---
 
