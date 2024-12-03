@@ -1,6 +1,6 @@
-const moment = require('moment'); // Para calcular a idade
+const moment = require('moment');
 const clienteService = require('../service/cliente');
-const pool = require('../db'); // Conexão com o banco
+const pool = require('../db');
 
 // Validação de email único
 const emailExists = async (email) => {

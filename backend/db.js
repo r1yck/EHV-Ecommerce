@@ -1,9 +1,10 @@
 const mysql = require('mysql2/promise');
 
+// Criação do pool de conexões com o banco de dados MySQL
 const pool = mysql.createPool({
-    host: 'localhost', // ou o endereço do seu banco
-    user: 'root',      // substitua pelo usuário do seu banco
-    password: '@Henri0202', // senha do banco
+    host: 'localhost',
+    user: 'root',
+    password: '@Henri0202',
     database: 'api_db',
     waitForConnections: true,
     connectionLimit: 10,
