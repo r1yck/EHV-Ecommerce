@@ -1,7 +1,33 @@
+const moment = require('moment'); // Para calcular a idade
 const clienteService = require('../service/cliente');
+const pool = require('../db'); // Conexão com o banco
+
+// Validação de email único
+const emailExists = async (email) => {
+    const [rows] = await pool.query('SELECT * FROM clientes WHERE email = ?', [email]);
+    return rows.length > 0;
+};
+
+// Validação de idade
+const isAdult = (dataNascimento) => {
+    const idade = moment().diff(moment(dataNascimento, 'YYYY-MM-DD'), 'years');
+    return idade >= 18;
+};
 
 // Criar Cliente
 exports.createCliente = async (req, res) => {
+    const { nome, email, dataNascimento } = req.body;
+
+    // Validação de email único
+    if (await emailExists(email)) {
+        return res.status(400).json({ message: 'Email já registrado' });
+    }
+
+    // Validação de idade
+    if (!isAdult(dataNascimento)) {
+        return res.status(400).json({ message: 'Você precisa ter 18 anos ou mais' });
+    }
+
     try {
         const cliente = await clienteService.createCliente(req.body);
         res.status(201).json(cliente);
@@ -12,8 +38,21 @@ exports.createCliente = async (req, res) => {
 
 // Atualizar Cliente
 exports.updateCliente = async (req, res) => {
+    const { nome, email, dataNascimento } = req.body;
+    const clienteId = req.params.id;
+
+    // Validação de email único (excluindo o próprio cliente)
+    if (await emailExists(email)) {
+        return res.status(400).json({ message: 'Email já registrado' });
+    }
+
+    // Validação de idade
+    if (!isAdult(dataNascimento)) {
+        return res.status(400).json({ message: 'Você precisa ter 18 anos ou mais' });
+    }
+
     try {
-        const cliente = await clienteService.updateCliente(req.params.id, req.body);
+        const cliente = await clienteService.updateCliente(clienteId, req.body);
         if (!cliente) {
             return res.status(404).json({ message: "Cliente não encontrado" });
         }
