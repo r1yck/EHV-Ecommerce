@@ -17,11 +17,12 @@ Este projeto consiste em um sistema completo de **E-commerce** para o gerenciame
 
 /frontend-web
   /src
-    /components  -> Componentes reutilizáveis da interface
-    /pages       -> Páginas principais da aplicação
-    /services    -> Funções para interagir com a API
-    /styles      -> Arquivos de estilo (CSS/SCSS)
-  package.json   -> Dependências e configurações da aplicação Web
+    /app 
+      /shopping        -> pagina compras
+      /modalnewclient  -> Componentes modal novo cliente
+      /products        -> Páginas produtos
+      /services        -> Funções para interagir com a API
+  package.json         -> Dependências e configurações da aplicação Web
 
 /frontend-mobile
   /src
@@ -45,6 +46,7 @@ Este projeto consiste em um sistema completo de **E-commerce** para o gerenciame
 - **Next.js**
 - **Axios** (para requisições HTTP)
 - **React Context** (para gerenciamento de estado)
+- **TailwindCSS** Framework de CSS para construção rápida de interfaces responsivas e personalizáveis.
 
 ### **Frontend Mobile**
 - **React Native**
