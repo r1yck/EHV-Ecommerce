@@ -10,13 +10,13 @@ const Main: React.FC = () => {
 const [modalIsOpen, setModalIsOpen] = useState (false);
   
   function handleOpenModal(){
-    setModalIsOpen (!modalIsOpen) 
+    setModalIsOpen (!modalIsOpen) //incia com a modal fechada 
   }
 
   return (
     <div className="flex flex-col min-h-screen bg-green-300 ">
       {/* Navbar */}
-      <div className="flex flex-col justify-center items-center p-2"> {/* Usei essa Div para centralizar a navbar */}
+      <div className="flex flex-col justify-center items-center p-2"> {/* Div para centralizar a navbar */}
       <nav className="flex w-3/4 justify-center gap-x-11 py-3 border-4 border-green-700 bg-green-400 rounded-full shadow-lg">
         <a href="#" className="text-lg font-medium text-black hover:text-emerald-700 ">
           Clientes
