@@ -1,12 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
+import { createUser } from "../api/api";
 
 interface ModalProps {
   isOpen?: boolean;
   onClose: () => void;
 }
 
-export default function ModalNovoCliente({ isOpen, onClose }: ModalProps) {
-  if (!isOpen) return null; // Se a modal for false n retorna nd
+  export default function ModalNovoCliente({ isOpen, onClose }: ModalProps) {
+   if (!isOpen) return null; // Se a modal for false n retorna nd
+
+    const [formData, setFormData] = useState({
+      name: "",
+      email: "",
+     birthDate: "",
+   });
+
+  // att os dados do formulário ao digitar
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // envia os dados pro backend
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); // para pagina n da reload
+    try {
+      await createUser(formData); // envia os dados pro backend
+      alert("Usuário criado com sucesso!");
+      onClose(); // fecha a modal se for sucesso
+    } catch (error) {
+      console.error("Erro ao criar usuário:", error);
+      alert("Erro ao criar usuário.");
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
