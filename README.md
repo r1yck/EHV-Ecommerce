@@ -140,7 +140,7 @@ A interface Web, construída com **Next.js**, permite a interação com a API at
 **Pagina clientes**
 ![image](https://github.com/user-attachments/assets/fac2fedc-8529-4d2a-a0f7-9d156744b1dc)
 **pagina produtcs**
-![image](https://github.com/user-attachments/assets/06a08751-7c22-4220-b3ac-6a4cd36f7a95)
+![image](https://github.com/user-attachments/assets/00b5016b-09ec-4bcd-8083-84a70c020a61)
 **Pagina compras**
 ![image](https://github.com/user-attachments/assets/30f2529f-eb15-40a2-9c46-c8a91358a1f6)
 
