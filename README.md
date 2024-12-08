@@ -137,6 +137,14 @@ npx react-native run-android   # ou run-ios, dependendo da plataforma
 ### **Frontend Web (Next.js)**
 A interface Web, construída com **Next.js**, permite a interação com a API através de páginas dinâmicas para gerenciar **clientes**, **produtos** e **compras** de forma eficiente e intuitiva.
 
+**Pagina clientes**
+![image](https://github.com/user-attachments/assets/fac2fedc-8529-4d2a-a0f7-9d156744b1dc)
+**pagina produtcs**
+![image](https://github.com/user-attachments/assets/06a08751-7c22-4220-b3ac-6a4cd36f7a95)
+**Pagina compras**
+![image](https://github.com/user-attachments/assets/30f2529f-eb15-40a2-9c46-c8a91358a1f6)
+
+
 ### **Frontend Mobile (React Native)**
 A aplicação mobile, desenvolvida com **React Native**, oferece uma experiência otimizada para dispositivos móveis, permitindo que os usuários gerenciem **clientes**, **produtos** e **compras** diretamente no celular.
 
