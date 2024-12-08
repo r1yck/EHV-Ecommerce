@@ -1,7 +1,40 @@
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+'use client';
+
+import { getProducts } from '../api/api'; 
+import { useEffect, useState } from 'react';
 
 export default function Shopping() {
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const fetchedProducts = await getProducts();
+        setProducts(fetchedProducts);
+
+        // Calcula os totais após buscar os produtos
+        const items = fetchedProducts.reduce(
+          (total, product) => total + product.quantity,
+          0
+        );
+        const price = fetchedProducts.reduce(
+          (total, product) => total + product.quantity * product.price,
+          0
+        );
+
+        setTotalItems(items);
+        setTotalPrice(price);
+      } catch (error) {
+        console.error('Erro ao buscar produtos:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
     return (
     
         <div className="flex flex-col min-h-screen bg-green-300 ">
@@ -16,7 +49,7 @@ export default function Shopping() {
                     </a>
                     <a href="/products" className="text-lg font-medium text-black hover:text-emerald-700">
                         Produtos
-                    </a>
+                    </a>  
                 </nav>
             </div>
             {/* Navbar */}
@@ -27,33 +60,36 @@ export default function Shopping() {
 
                 {/* Lista de Itens no Carrinho */}
                 <div className="flex flex-col gap-4 mb-6">
-                    {[
-                    { id: 1, name: "Produto A", price: "R$ " },
-                    { id: 2, name: "Produto B", price: "R$ " },
-                    ].map((item) => (
-                    <div
-                        key={item.id}
-                        className="flex justify-between items-center border-b pb-2 border-gray-300"
-                    >
-                        <div>
-                          <p className="text-lg font-medium text-gray-800">{item.name}</p>
-                          <p className="text-sm text-gray-600">{item.price}</p>
-                        </div>
-                        <button className="text-red-500 font-bold hover:text-red-700 transition">
-                          Remover
-                        </button>
-                     </div>
-                 ))}
+          {products.length > 0 ? (
+            products.map((item) => (
+              <div
+                key={item.id}
+                className="flex justify-between items-center border-b pb-2 border-gray-300"
+              >
+                <div>
+                  <p className="text-lg font-medium text-gray-800">{item.name}</p>
+                  <p className="text-sm text-gray-600">
+                    Quantidade: {item.quantity} x R$ {item.price.toFixed(2)}
+                  </p>
                 </div>
+                <button className="text-red-500 font-bold hover:text-red-700 transition">
+                  Remover
+                </button>
+              </div>
+            ))
+            ) : (
+            <p className="text-center text-gray-600">Seu carrinho vazio.</p>
+            )}
+            </div>
 
                 {/* Total de Itens e Valor */}
                 <div className="flex justify-between items-center text-gray-700 mb-4">
                   <span className="text-lg font-medium">Total de Itens:</span>
-                  <span className="text-lg font-bold">2</span>
+                  <span className="text-lg font-bold">{totalItems}</span>
                 </div>
                 <div className="flex justify-between items-center text-gray-700 mb-6">
                   <span className="text-lg font-medium">Valor Total:</span>
-                  <span className="text-lg font-bold">R$</span>
+                  <span className="text-lg font-bold">R$: {totalPrice.toFixed(2)}</span>
                  </div>
 
                  {/* Botão Finalizar Compra */}
