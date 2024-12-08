@@ -1,17 +1,49 @@
 'use client'; // Marca o arquivo como um Client Component para exibe na na interface
 
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import ModalNovoCliente from './modalnewclient/page';
+import { createUser, getUsers } from './api/api'; 
 
 const Main: React.FC = () => {
 
-const [modalIsOpen, setModalIsOpen] = useState (false);
+const [modalIsOpen, setModalIsOpen] = useState (false);// estado da modal 
+const [clientes, setClientes] = useState<any[]>([]); // lista de clientes
+const [loading, setLoading] = useState(false); // controlar carregamento da lista
   
   function handleOpenModal(){
     setModalIsOpen (!modalIsOpen) //incia com a modal fechada 
   }
+
+  // buscar clientes API
+  const fetchClientes = async () => {
+    setLoading(true); // mostra que ta carregando
+    try {
+      const data = await getUsers(); // chama a função buscar clientes
+      setClientes(data); // att o estado com os dados 
+    } catch (error) {
+      console.error("Erro ao buscar clientes:", error);
+    } finally {
+      setLoading(false); // terminou de carregar
+    }
+  };
+
+  // Chama a função fetchClientes quando o componente for montado
+  useEffect(() => {
+    fetchClientes();
+  }, []); // Array vazio para rodar apenas uma vez, ao montar o componente
+
+  // Função para enviar os dados do formulário ao backend
+  const handleCreateUser = async (user: { name: string; email: string; birthDate: string }) => {
+    try {
+      await createUser(user); // Envia os dados ao backend
+      alert('Usuário criado com sucesso!');
+      setModalIsOpen(false); // Fecha a modal após sucesso
+    } catch (error) {
+      console.error('Erro ao criar usuário:', error);
+      alert('Erro ao criar usuário.');
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-green-300 ">
@@ -43,17 +75,15 @@ const [modalIsOpen, setModalIsOpen] = useState (false);
 
       {/* Lista de Clientes */}
       <div className="container m-auto grid grid-cols-3 gap-2 px-4">
-        {Array(9)
-          .fill(null)
-          .map((_, index) => (
+        {clientes.length > 0 ? (clientes.map((cliente, index) =>  (
             <div
               key={index}
               className="p-4 border rounded-lg shadow-sm bg-white flex flex-col justify-between"
             >
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">Fulano de tal</h2>
-                <p className="text-sm text-gray-600">Fulanin@email.com</p>
-                <p className="text-sm text-gray-500">12/12/1999</p>
+                <h2 className="text-lg font-semibold text-gray-800">{clientes.name}</h2>
+                <p className="text-sm text-gray-600">{clientes.email}</p>
+                <p className="text-sm text-gray-500">{clientes.birthDate}</p>
               </div>
               <div className="flex space-x-2 mt-4">
                 <button className="flex-1 py-1 text-center bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
@@ -64,7 +94,12 @@ const [modalIsOpen, setModalIsOpen] = useState (false);
                 </button>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className="col-span-full flex justify-center items-center h-32">
+            <p className="text-center text-gray-600">Nenhum cliente cadastrado</p>
+          </div>
+        )}
       </div>
 
       {/* Rodapé */}
