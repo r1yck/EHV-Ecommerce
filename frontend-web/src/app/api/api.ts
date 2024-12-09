@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export interface User {
+  id?: any;
   name: string;
   email: string;
   birthDate: string;

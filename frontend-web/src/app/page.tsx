@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import ModalNovoCliente from './modalnewclient/page';
-import { createUser, getUsers, User } from './api/api';
+import api, { createUser, getUsers, User } from './api/api';
+import ModalEditarCliente from './modaleditarclient/page';
 
 
 
@@ -54,6 +55,29 @@ const Main: React.FC = () => {
     setModalIsOpen(true); // Abre a modal ou a tela de edição
   };
   
+  const handleSaveEdit = async (user: User) => {
+    try {
+      // Chame a função de editar no backend
+      await api.put(`/users/${user.id}`, user);
+      // Atualize o estado local com o cliente editado
+      const updatedClientes = clientes.map(cliente =>
+        cliente.id === user.id ? user : cliente
+      );
+      setClientes(updatedClientes);
+      alert("Cliente editado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao editar cliente:", error);
+      alert("Erro ao editar cliente.");
+    }
+  };
+  
+  // Passando os dados para a Modal
+  <ModalEditarCliente
+    isOpen={modalIsOpen}
+    onClose={() => setModalIsOpen(false)}
+    cliente={clienteEdicao}
+    onSave={handleSaveEdit}
+  />
 
   return (
     <div className="flex flex-col min-h-screen bg-green-300">
@@ -99,8 +123,11 @@ const Main: React.FC = () => {
                 <p className="text-sm text-gray-500">{cliente.birthDate}</p>
               </div>
               <div className="flex space-x-2 mt-4">
-                <button className="flex-1 py-1 text-center bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-                  Editar
+              <button
+                className="flex-1 py-1 text-center bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                onClick={() => handleEdit(cliente)} // Chama a função para editar o cliente 
+                >
+                Editar
                 </button>
                 <button className="flex-1 py-1 text-center bg-red-600 text-white rounded hover:bg-red-700">
                   Inativar
