@@ -2,6 +2,7 @@
 
 import { getProducts } from '../api/api'; 
 import { useEffect, useState } from 'react';
+import { Product } from '../api/api';
 
 export default function Shopping() {
 

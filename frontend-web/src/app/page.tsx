@@ -27,7 +27,6 @@ const Main: React.FC = () => {
       setClientes(data); // Atualiza o estado com os dados
     } catch (error) {
       console.error("Erro ao buscar clientes:", error);
-      alert("Erro ao buscar clientes. Verifique o console para mais detalhes.");
     } finally {
       setLoading(false); // Finaliza o carregamento
     }
