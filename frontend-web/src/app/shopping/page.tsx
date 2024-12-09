@@ -35,31 +35,35 @@ export default function Shopping() {
     fetchProducts();
   }, []);
 
-    return (
-    
-        <div className="flex flex-col min-h-screen bg-green-300 ">
-          {/* Navbar */}
-            <div className="flex flex-col justify-center items-center p-2"> {/* Usei essa Div para centralizar a navbar */}
-                <nav className="flex w-3/4 justify-center gap-x-11 py-3 border-4 border-green-700 bg-green-400 rounded-full shadow-lg">
-                    <a href={"/"} className="text-lg font-medium text-black hover:text-emerald-700 ">
-                        Clientes
-                    </a>
-                    <a href="#" className="text-lg font-medium text-black hover:text-emerald-700">
-                        Compras
-                    </a>
-                    <a href="/products" className="text-lg font-medium text-black hover:text-emerald-700">
-                        Produtos
-                    </a>  
-                </nav>
-            </div>
-            {/* Navbar */}
+  // Função para formatar números com segurança
+  const formatPrice = (price: number) => {
+    return typeof price === 'number' && !isNaN(price) ? price.toFixed(2) : '0.00';
+  };
 
-            {/* Lista de Compras */}
-            <div className="m-6 p-6 border border-gray-300 rounded-lg bg-white shadow-lg max-w-sm mx-auto">
-                <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">Carrinho</h1>
+  return (
+    <div className="flex flex-col min-h-screen bg-green-300">
+      {/* Navbar */}
+      <div className="flex flex-col justify-center items-center p-2"> 
+        <nav className="flex w-3/4 justify-center gap-x-11 py-3 border-4 border-green-700 bg-green-400 rounded-full shadow-lg">
+          <a href={"/"} className="text-lg font-medium text-black hover:text-emerald-700 ">
+            Clientes
+          </a>
+          <a href="#" className="text-lg font-medium text-black hover:text-emerald-700">
+            Compras
+          </a>
+          <a href="/products" className="text-lg font-medium text-black hover:text-emerald-700">
+            Produtos
+          </a>  
+        </nav>
+      </div>
+      {/* Navbar */}
 
-                {/* Lista de Itens no Carrinho */}
-                <div className="flex flex-col gap-4 mb-6">
+      {/* Lista de Compras */}
+      <div className="m-6 p-6 border border-gray-300 rounded-lg bg-white shadow-lg max-w-sm mx-auto">
+        <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">Carrinho</h1>
+
+        {/* Lista de Itens no Carrinho */}
+        <div className="flex flex-col gap-4 mb-6">
           {products.length > 0 ? (
             products.map((item) => (
               <div
@@ -69,7 +73,7 @@ export default function Shopping() {
                 <div>
                   <p className="text-lg font-medium text-gray-800">{item.name}</p>
                   <p className="text-sm text-gray-600">
-                    Quantidade: {item.quantity} x R$ {item.price.toFixed(2)}
+                    Quantidade: {item.quantity} x R$ {formatPrice(item.price)}
                   </p>
                 </div>
                 <button className="text-red-500 font-bold hover:text-red-700 transition">
@@ -77,29 +81,27 @@ export default function Shopping() {
                 </button>
               </div>
             ))
-            ) : (
+          ) : (
             <p className="text-center text-gray-600">Seu carrinho vazio.</p>
-            )}
-            </div>
-
-                {/* Total de Itens e Valor */}
-                <div className="flex justify-between items-center text-gray-700 mb-4">
-                  <span className="text-lg font-medium">Total de Itens:</span>
-                  <span className="text-lg font-bold">{totalItems}</span>
-                </div>
-                <div className="flex justify-between items-center text-gray-700 mb-6">
-                  <span className="text-lg font-medium">Valor Total:</span>
-                  <span className="text-lg font-bold">R$: {totalPrice.toFixed(2)}</span>
-                 </div>
-
-                 {/* Botão Finalizar Compra */}
-                 <button className="w-full bg-green-500 text-white py-3 rounded-lg font-bold text-lg hover:bg-green-600 transition duration-300">
-                   Finalizar Compra
-                 </button>
-                </div>
-
-              {/* Final Lista de Compras */}
-
+          )}
         </div>
-    );
+
+        {/* Total de Itens e Valor */}
+        <div className="flex justify-between items-center text-gray-700 mb-4">
+          <span className="text-lg font-medium">Total de Itens:</span>
+          <span className="text-lg font-bold">{totalItems}</span>
+        </div>
+        <div className="flex justify-between items-center text-gray-700 mb-6">
+          <span className="text-lg font-medium">Valor Total:</span>
+          <span className="text-lg font-bold">R$: {formatPrice(totalPrice)}</span>
+        </div>
+
+        {/* Botão Finalizar Compra */}
+        <button className="w-full bg-green-500 text-white py-3 rounded-lg font-bold text-lg hover:bg-green-600 transition duration-300">
+          Finalizar Compra
+        </button>
+      </div>
+      {/* Final Lista de Compras */}
+    </div>
+  );
 }

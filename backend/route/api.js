@@ -11,7 +11,7 @@ router.get('/users', async (req, res) => {
         const users = clientes.map(cliente => ({
             name: cliente.nome,
             email: cliente.email,
-            birthDate: cliente.dataNascimento,
+            birthDate: cliente.idade,
         }));
         res.json(users);
     } catch (error) {

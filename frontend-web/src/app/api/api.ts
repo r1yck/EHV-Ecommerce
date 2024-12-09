@@ -22,39 +22,38 @@ interface Shopping {
 
 // Configuração do Axios
 const api = axios.create({
-  baseURL: 'http://localhost:3001/api', // Troque pela URL do seu backend
+  baseURL: 'http://localhost:3001', // URL base do backend
 });
 
-// Função para buscar usuários
+// Função para buscar clientes
 export const getUsers = async (): Promise<User[]> => {
-  const response = await api.get('/users');
-  return response.data; // Retorna os dados de usuários
+  const response = await api.get('/clientes');  // Alterado para '/clientes'
+  return response.data; // Retorna os dados dos clientes
 };
 
-// Função para criar um novo usuário
+// Função para criar um novo cliente
 export const createUser = async (user: User): Promise<void> => {
-  await api.post('/users', user); // Envia os dados do novo usuário
+  await api.post('/clientes', user);  // Alterado para '/clientes'
 };
 
 // Funções para produtos
 export const getProducts = async (): Promise<Product[]> => {
-  const response = await api.get('/products');
+  const response = await api.get('/produtos');  // Alterado para '/produtos'
   return response.data;
 };
 
 export const createProduct = async (product: Product): Promise<void> => {
-  await api.post('/products', product);
+  await api.post('/produtos', product);  // Alterado para '/produtos'
 };
 
 // Funções para compras
 export const getPurchases = async (): Promise<Shopping[]> => {
-  const response = await api.get('/purchases');
+  const response = await api.get('/compras');  // Alterado para '/compras'
   return response.data;
 };
 
 export const createPurchase = async (purchase: Shopping): Promise<void> => {
-  await api.post('/purchases', purchase);
+  await api.post('/compras', purchase);  // Alterado para '/compras'
 };
 
 export default api;
-
