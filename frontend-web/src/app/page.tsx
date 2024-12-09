@@ -2,12 +2,16 @@
 
 import React, { useEffect, useState } from 'react';
 import ModalNovoCliente from './modalnewclient/page';
-import { createUser, getUsers } from './api/api';
+import { createUser, getUsers, User } from './api/api';
+
+
 
 const Main: React.FC = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false); // Estado da modal
   const [clientes, setClientes] = useState<any[]>([]); // Lista de clientes
   const [loading, setLoading] = useState(false); // Controlar carregamento da lista
+  const [clienteEdicao, setClienteEdicao] = useState<User | null>(null); // Estado para editar o cliente  
+
 
   function handleOpenModal() {
     setModalIsOpen(!modalIsOpen); // Alterna entre abrir/fechar a modal
@@ -44,6 +48,12 @@ const Main: React.FC = () => {
       alert('Erro ao criar usuário.');
     }
   };
+
+  const handleEdit = (cliente: User) => {
+    setClienteEdicao(cliente); // Preenche o estado com os dados do cliente a ser editado
+    setModalIsOpen(true); // Abre a modal ou a tela de edição
+  };
+  
 
   return (
     <div className="flex flex-col min-h-screen bg-green-300">
