@@ -39,22 +39,22 @@ export const createUser = async (user: User): Promise<void> => {
 
 // Funções para products
 export const getProducts = async (): Promise<Product[]> => {
-  const response = await api.get('/products');  // Alterado para '/products'
+  const response = await api.get('/products');  
   return response.data;
 };
 
 export const createProduct = async (product: Product): Promise<void> => {
-  await api.post('/products', product);  // Alterado para '/products'
+  await api.post('/products', product);  
 };
 
 // Funções para purchases
 export const getPurchases = async (): Promise<Shopping[]> => {
-  const response = await api.get('/purchases');  // Alterado para '/purchases'
+  const response = await api.get('/purchases'); 
   return response.data;
 };
 
 export const createPurchase = async (purchase: Shopping): Promise<void> => {
-  await api.post('/purchases', purchase);  // Alterado para '/purchases'
+  await api.post('/purchases', purchase); 
 };
 
 export default api;
