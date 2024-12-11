@@ -1,53 +1,54 @@
 const express = require('express');
 const router = express.Router();
-const clienteService = require('../service/cliente');
-const produtoService = require('../service/produto');
-const compraService = require('../service/compra');
+const clientService = require('../service/client');
+const productService = require('../service/product');
+const purchaseService = require('../service/purchase');
 
-// Endpoint para usuários (/users)
-router.get('/users', async (req, res) => {
+// Endpoint for clients (/clients)
+router.get('/clients', async (req, res) => {
     try {
-        const clientes = await clienteService.getClientes();
-        const users = clientes.map(cliente => ({
-            name: cliente.nome,
-            email: cliente.email,
-            birthDate: cliente.idade,
+        const clients = await clientService.getClients();
+        const users = clients.map(client => ({
+            id: client.id,
+            name: client.name,
+            email: client.email,
+            birthDate: client.birthDate, // Adjusted to birthDate
         }));
         res.json(users);
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao buscar usuários' });
+        res.status(500).json({ error: 'Error fetching clients' }); // Error message in English
     }
 });
 
-// Endpoint para produtos (/products)
+// Endpoint for products (/products)
 router.get('/products', async (req, res) => {
     try {
-        const produtos = await produtoService.getProdutos();
-        const products = produtos.map(produto => ({
-            id: produto.id,
-            name: produto.nome,
-            quantity: produto.quantidade,
-            price: produto.preco,
+        const products = await productService.getProducts();
+        const productsList = products.map(product => ({
+            id: product.id,
+            name: product.name, // Adjusted to name
+            quantity: product.quantity, // Adjusted to quantity
+            price: product.price, // Adjusted to price
         }));
-        res.json(products);
+        res.json(productsList);
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao buscar produtos' });
+        res.status(500).json({ error: 'Error fetching products' }); // Error message in English
     }
 });
 
-// Endpoint para compras (/purchases)
+// Endpoint for purchases (/purchases)
 router.get('/purchases', async (req, res) => {
     try {
-        const compras = await compraService.getCompras();
-        const purchases = compras.map(compra => ({
-            id: compra.id,
-            userId: compra.clienteId,
-            productId: compra.produtoId,
-            date: compra.dataCompra,
+        const purchases = await purchaseService.getPurchases();
+        const purchaseList = purchases.map(purchase => ({
+            id: purchase.id,
+            userId: purchase.clientId, // Adjusted to clientId
+            productId: purchase.productId, // Adjusted to productId
+            date: purchase.purchaseDate, // Adjusted to purchaseDate
         }));
-        res.json(purchases);
+        res.json(purchaseList);
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao buscar compras' });
+        res.status(500).json({ error: 'Error fetching purchases' }); // Error message in English
     }
 });
 

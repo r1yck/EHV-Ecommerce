@@ -2,49 +2,44 @@ CREATE DATABASE IF NOT EXISTS api_db;
 
 USE api_db;
 
-CREATE TABLE clientes (
+-- Clients Table
+CREATE TABLE clients (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255),
+    name VARCHAR(255),       -- Alterado para 'name'
     email VARCHAR(255),
-    idade INT
+    birthDate DATE,          -- Alterado para 'birthDate' e tipo 'DATE'
+    age INT                  -- 'idade' foi alterado para 'age'
 );
 
-CREATE TABLE produtos (
+-- Products Table
+CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255),
-    preco DECIMAL(10, 2)
+    name VARCHAR(255),       -- Alterado para 'name'
+    price DECIMAL(10, 2)     -- Alterado para 'price'
 );
 
--- Inserindo dados na tabela 'clientes' (clientes)
-INSERT INTO clientes (nome, email) VALUES ('João Silva', 'joao@email.com');
-INSERT INTO clientes (nome, email) VALUES ('Maria Oliveira', 'maria@email.com');
-
-UPDATE clientes SET idade = 30 WHERE id = 1; -- Define a idade de João Silva como 30
-UPDATE clientes SET idade = 25 WHERE id = 2; -- Define a idade de Maria Oliveira como 25
-
--- Tabela de Compras
-CREATE TABLE compras (
+-- Purchases Table
+CREATE TABLE purchases (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_cliente INT NOT NULL,
-    data_compra DATETIME DEFAULT CURRENT_TIMESTAMP,
+    client_id INT NOT NULL,          -- Alterado para 'client_id'
+    purchase_date DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Alterado para 'purchase_date'
     total DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (id_cliente) REFERENCES clientes(id)
+    FOREIGN KEY (client_id) REFERENCES clients(id)
 );
 
--- Tabela de Itens de Compra
-CREATE TABLE itens_compra (
+-- Purchase Items Table
+CREATE TABLE purchase_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_compra INT NOT NULL,
-    id_produto INT NOT NULL,
-    quantidade INT NOT NULL,
-    preco_unitario DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (id_compra) REFERENCES compras(id),
-    FOREIGN KEY (id_produto) REFERENCES produtos(id)
+    purchase_id INT NOT NULL,        -- Alterado para 'purchase_id'
+    product_id INT NOT NULL,         -- Alterado para 'product_id'
+    quantity INT NOT NULL,           -- Alterado para 'quantity'
+    unit_price DECIMAL(10, 2) NOT NULL,  -- Alterado para 'unit_price'
+    FOREIGN KEY (purchase_id) REFERENCES purchases(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-INSERT INTO produtos (nome, preco) VALUES ('Produto Teste', 99.99);
 
-SELECT * FROM produtos;
+INSERT INTO clients (name, email, birthDate, age) VALUES ('Test Client', 'test@example.com', '2000-01-01', 24);
 
-
+SELECT * FROM clients;
 
