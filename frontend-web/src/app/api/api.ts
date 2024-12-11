@@ -28,33 +28,33 @@ const api = axios.create({
 
 // Função para buscar clientes
 export const getUsers = async (): Promise<User[]> => {
-  const response = await api.get('/clientes');  // Alterado para '/clientes'
+  const response = await api.get('/clients');  // Alterado para '/clientes'
   return response.data; // Retorna os dados dos clientes
 };
 
 // Função para criar um novo cliente
 export const createUser = async (user: User): Promise<void> => {
-  await api.post('/clientes', user);  // Alterado para '/clientes'
+  await api.post('/clients', user);  // Alterado para '/clientes'
 };
 
-// Funções para produtos
+// Funções para products
 export const getProducts = async (): Promise<Product[]> => {
-  const response = await api.get('/produtos');  // Alterado para '/produtos'
+  const response = await api.get('/products');  // Alterado para '/products'
   return response.data;
 };
 
 export const createProduct = async (product: Product): Promise<void> => {
-  await api.post('/produtos', product);  // Alterado para '/produtos'
+  await api.post('/products', product);  // Alterado para '/products'
 };
 
-// Funções para compras
+// Funções para purchases
 export const getPurchases = async (): Promise<Shopping[]> => {
-  const response = await api.get('/compras');  // Alterado para '/compras'
+  const response = await api.get('/purchases');  // Alterado para '/purchases'
   return response.data;
 };
 
 export const createPurchase = async (purchase: Shopping): Promise<void> => {
-  await api.post('/compras', purchase);  // Alterado para '/compras'
+  await api.post('/purchases', purchase);  // Alterado para '/purchases'
 };
 
 export default api;
