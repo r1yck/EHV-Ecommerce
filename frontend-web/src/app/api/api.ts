@@ -43,6 +43,12 @@ export const getProducts = async (): Promise<Product[]> => {
   return response.data;
 };
 
+// Função para editar um cliente
+export const updateUser = async (user: User): Promise<void> => {
+  await api.put(`/clients/${user.id}`, user); // A URL deve ter o ID do cliente para edição
+};
+
+
 export const createProduct = async (product: Product): Promise<void> => {
   await api.post('/products', product);  // Alterado para '/products'
 };
