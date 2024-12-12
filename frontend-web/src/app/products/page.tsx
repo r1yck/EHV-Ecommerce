@@ -21,7 +21,6 @@ export default function Products() {
     }
   };
 
-  // useEffect para chamar a função de buscar produtos ao carregar o componente
   const handleSaveProduct = async (product: Product) => {
     try {
       await createProduct(product); // Salva o novo produto
@@ -41,9 +40,7 @@ export default function Products() {
 
   return (
     <div className="flex flex-col min-h-screen bg-green-300">
-      {/* Navbar */}
       <div className="flex flex-col justify-center items-center p-2">
-        {/* Usei essa Div para centralizar a navbar */}
         <nav className="flex w-3/4 justify-center gap-x-11 py-3 border-4 border-green-700 bg-green-400 rounded-full shadow-lg">
           <a href="#" className="text-lg font-medium text-black hover:text-emerald-700">
             Clientes
@@ -56,7 +53,6 @@ export default function Products() {
           </a>
         </nav>
       </div>
-      {/* Navbar */}
       {/* Botão para adicionar produto */}
       <div className="flex justify-end p-4">
         <button
