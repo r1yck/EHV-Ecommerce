@@ -34,7 +34,7 @@ const Main: React.FC = () => {
       await createUser(user);
       alert('Usuário criado com sucesso!');
       setIsCreateModalOpen(false);
-      fetchClientes();
+      fetchClientes(); // Atualiza a lista após criar
     } catch (error) {
       console.error('Erro ao criar usuário:', error);
       alert('Erro ao criar usuário.');
@@ -54,12 +54,13 @@ const Main: React.FC = () => {
   const handleSaveEdit = async (user: User) => {
     try {
       await api.put(`/users/${user.id}`, user);
-      const updatedClientes = clientes.map(cliente =>
-        cliente.id === user.id ? user : cliente
+      setClientes((prevClientes) =>
+        prevClientes.map((cliente) =>
+          cliente.id === user.id ? { ...cliente, ...user } : cliente
+        )
       );
-      setClientes(updatedClientes);
       alert('Cliente editado com sucesso!');
-      handleCloseEditModal();
+      handleCloseEditModal(); // Fecha a modal
     } catch (error) {
       console.error('Erro ao editar cliente:', error);
       alert('Erro ao editar cliente.');
@@ -91,24 +92,30 @@ const Main: React.FC = () => {
         </button>
       </div>
 
-      <ModalNovoCliente isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} onSave={handleCreateUser} />
+      <ModalNovoCliente
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSave={handleCreateUser}
+      />
 
       {clienteEdicao && (
         <ModalEditarCliente
           isOpen={isEditModalOpen}
           onClose={handleCloseEditModal}
           cliente={clienteEdicao}
-          onSave={handleSaveEdit} // Passando a função de salvar edição
+          onSave={handleSaveEdit}
         />
       )}
 
       <div className="container m-auto grid grid-cols-3 gap-2 px-4">
         {clientes.length > 0 ? (
-          clientes.map(cliente => (
+          clientes.map((cliente) => (
             <div key={cliente.id} className="p-4 border rounded-lg shadow-sm bg-white">
               <h2 className="text-lg font-semibold text-gray-800">{cliente.name}</h2>
               <p className="text-sm text-gray-600">{cliente.email}</p>
-              <p className="text-sm text-gray-500">{new Date(cliente.birthDate).toLocaleDateString()}</p>
+              <p className="text-sm text-gray-500">
+                {new Date(cliente.birthDate).toLocaleDateString()}
+              </p>
               <div className="flex space-x-2 mt-4">
                 <button
                   className="flex-1 py-1 text-center bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
