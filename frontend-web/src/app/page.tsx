@@ -69,17 +69,17 @@ const Main: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen bg-green-300">
       <div className="flex flex-col justify-center items-center p-2">
-      <nav className="flex w-3/4 justify-center gap-x-11 py-3 border-4 border-green-700 bg-green-400 rounded-full shadow-lg">
-        <a href="#" className="text-lg font-medium text-black hover:text-emerald-700">
-          Clientes
-        </a>
-        <a href="/shopping" className="text-lg font-medium text-black hover:text-emerald-700">
-          Compras
-        </a>
-        <a href="/products" className="text-lg font-medium text-black hover:text-emerald-700">
-          Produtos
-        </a>
-      </nav>
+        <nav className="flex w-3/4 justify-center gap-x-11 py-3 border-4 border-green-700 bg-green-400 rounded-full shadow-lg">
+          <a href="#" className="text-lg font-medium text-black hover:text-emerald-700">
+            Clientes
+          </a>
+          <a href="/shopping" className="text-lg font-medium text-black hover:text-emerald-700">
+            Compras
+          </a>
+          <a href="/products" className="text-lg font-medium text-black hover:text-emerald-700">
+            Produtos
+          </a>
+        </nav>
       </div>
 
       <div className="flex justify-end p-4">
@@ -91,7 +91,7 @@ const Main: React.FC = () => {
         </button>
       </div>
 
-      <ModalNovoCliente isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} />
+      <ModalNovoCliente isOpen={isCreateModalOpen} onClose={() => setIsCreateModalOpen(false)} onSave={handleCreateUser} />
 
       {clienteEdicao && (
         <ModalEditarCliente

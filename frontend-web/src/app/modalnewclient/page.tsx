@@ -4,9 +4,10 @@ import { createUser } from "../api/api";
 interface ModalProps {
   isOpen?: boolean;
   onClose: () => void;
+  onSave: (user: { name: string; email: string; birthDate: string }) => Promise<void>;
 }
 
-export default function ModalNovoCliente({ isOpen, onClose }: ModalProps) {
+export default function ModalNovoCliente({ isOpen, onClose, onSave }: ModalProps) {
   if (!isOpen) return null; // Se a modal for false, não retorna nada
 
   const [formData, setFormData] = useState({
@@ -28,8 +29,7 @@ export default function ModalNovoCliente({ isOpen, onClose }: ModalProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Previne o reload da página
     try {
-      await createUser(formData); // Envia os dados ao backend
-      alert("Usuário criado com sucesso!");
+      await onSave(formData); // Chama o onSave passando os dados do formulário
       setFormData({ name: "", email: "", birthDate: "" }); // Reseta o formulário
       onClose(); // Fecha a modal após o sucesso
     } catch (error) {
