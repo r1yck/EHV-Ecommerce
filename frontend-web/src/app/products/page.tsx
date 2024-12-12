@@ -1,13 +1,13 @@
 'use client';
 
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { getProducts, Product } from '../api/api';
+import { getProducts, createProduct, Product } from '../api/api';
+import ModalAddProduto from '../modaladdproduto/page';
 
 export default function Products() {
-  const [loading, setLoading] = useState<boolean>(true); // Estado de carregamento
-  const [products, setProducts] = useState<Product[]>([]); // Estado para armazenar os produtos
+  const [loading, setLoading] = useState<boolean>(true);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Estado para controlar a abertura da modal
 
   // Função para buscar os produtos da API
   const fetchProducts = async () => {
@@ -22,9 +22,20 @@ export default function Products() {
   };
 
   // useEffect para chamar a função de buscar produtos ao carregar o componente
+  const handleSaveProduct = async (product: Product) => {
+    try {
+      await createProduct(product); // Salva o novo produto
+      fetchProducts(); // Atualiza a lista de produtos
+      alert('Produto adicionado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao adicionar produto:', error);
+      alert('Erro ao adicionar produto.');
+    }
+  };
+
   useEffect(() => {
-    fetchProducts(); // Chama a função de buscar produtos
-  }, []); // O array vazio significa que isso ocorre uma única vez ao montar o componente
+    fetchProducts();
+  }, []);
 
   if (loading) return <div>Carregando...</div>;
 
@@ -34,37 +45,45 @@ export default function Products() {
       <div className="flex flex-col justify-center items-center p-2">
         {/* Usei essa Div para centralizar a navbar */}
         <nav className="flex w-3/4 justify-center gap-x-11 py-3 border-4 border-green-700 bg-green-400 rounded-full shadow-lg">
-          <a href={"/"} className="text-lg font-medium text-black hover:text-emerald-700 ">
+          <a href="#" className="text-lg font-medium text-black hover:text-emerald-700">
             Clientes
           </a>
           <a href="/shopping" className="text-lg font-medium text-black hover:text-emerald-700">
             Compras
           </a>
-          <a href="#" className="text-lg font-medium text-black hover:text-emerald-700">
+          <a href="/products" className="text-lg font-medium text-black hover:text-emerald-700">
             Produtos
           </a>
         </nav>
       </div>
       {/* Navbar */}
+      {/* Botão para adicionar produto */}
+      <div className="flex justify-end p-4">
+        <button
+          className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-blue-300"
+          onClick={() => setIsAddModalOpen(true)}
+        >
+          Adicionar Produto
+        </button>
+      </div>
 
-      {/* Lista de Produtos */}
+      {/* Modal de adicionar produto */}
+      <ModalAddProduto
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSave={handleSaveProduct} // Passando a função para salvar
+      />
+
       <div className="container m-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
         {products.length > 0 ? (
-          products.map((product: Product) => (
+          products.map((product) => (
             <div
               key={product.id}
               className="p-4 border rounded-lg shadow-sm bg-white flex flex-col justify-between"
             >
-              <div>
-                <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
-                <p className="text-sm text-gray-600">Quantidade: {product.quantity}</p>
-                <p className="text-sm text-gray-500">Valor: {product.price.toFixed(2)}</p>
-              </div>
-              <div className="flex space-x-2 mt-4">
-                <button className="flex-1 py-1 text-center bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
-                  Colocar no carrinho
-                </button>
-              </div>
+              <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
+              <p className="text-sm text-gray-600">Quantidade: {product.quantity}</p>
+              <p className="text-sm text-gray-500">Valor: {product.price.toFixed(2)}</p>
             </div>
           ))
         ) : (
@@ -80,4 +99,3 @@ export default function Products() {
     </div>
   );
 }
-
