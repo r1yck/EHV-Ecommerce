@@ -67,6 +67,17 @@ const Main: React.FC = () => {
     }
   };
 
+  const handleInactivateClient = async (id: number) => {
+    try {
+      await api.delete(`/users/${id}`);
+      setClientes((prevClientes) => prevClientes.filter((cliente) => cliente.id !== id));
+      alert('Cliente inativado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao inativar cliente:', error);
+      alert('Erro ao inativar cliente.');
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-green-300">
       <div className="flex flex-col justify-center items-center p-2">
@@ -125,7 +136,7 @@ const Main: React.FC = () => {
                 </button>
                 <button
                   className="flex-1 py-1 text-center bg-red-600 text-white rounded hover:bg-red-700"
-                  onClick={() => console.log('Inativar cliente', cliente.id)}
+                  onClick={() => handleInactivateClient(cliente.id)}
                 >
                   Inativar
                 </button>
