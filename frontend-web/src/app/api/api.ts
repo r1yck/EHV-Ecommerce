@@ -63,4 +63,10 @@ export const createPurchase = async (purchase: Shopping): Promise<void> => {
   await api.post('/purchases', purchase); 
 };
 
+// Função para excluir um cliente
+export const deleteUser = async (id: string): Promise<void> => {
+  await api.delete(`/clients/${id}`); // Use a rota apropriada
+};
+
+
 export default api;
