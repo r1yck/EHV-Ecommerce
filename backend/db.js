@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 
-// Criação do pool de conexões com o banco de dados MySQL
+// Configure conforme sua conexão com o banco de dados que usará o arquivo api_db.sql
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
