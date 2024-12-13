@@ -28,13 +28,13 @@ const api = axios.create({
 
 // Função para buscar clientes
 export const getUsers = async (): Promise<User[]> => {
-  const response = await api.get('/clients');  // Alterado para '/clientes'
+  const response = await api.get('/clients');  
   return response.data; // Retorna os dados dos clientes
 };
 
 // Função para criar um novo cliente
 export const createUser = async (user: User): Promise<void> => {
-  await api.post('/clients', user);  // Alterado para '/clientes'
+  await api.post('/clients', user);  
 };
 
 // Funções para products
@@ -45,7 +45,7 @@ export const getProducts = async (): Promise<Product[]> => {
 
 // Função para editar um cliente
 export const updateUser = async (user: User): Promise<void> => {
-  await api.put(`/clients/${user.id}`, user); // A URL deve ter o ID do cliente para edição
+  await api.put(`/clients/${user.id}`, user); 
 };
 
 
@@ -53,20 +53,20 @@ export const createProduct = async (product: Product): Promise<void> => {
   await api.post('/products', product);  
 };
 
+// Função para inativar um cliente
+export const inactivateUser = async (userId: string): Promise<void> => {
+  await api.patch(`/clients/${userId}/inactivate`);
+};
+
+
 // Funções para purchases
 export const getPurchases = async (): Promise<Shopping[]> => {
-  const response = await api.get('/purchases'); 
+  const response = await api.get('/purchases');  
   return response.data;
 };
 
 export const createPurchase = async (purchase: Shopping): Promise<void> => {
-  await api.post('/purchases', purchase); 
+  await api.post('/purchases', purchase);  
 };
-
-// Função para excluir um cliente
-export const deleteUser = async (id: string): Promise<void> => {
-  await api.delete(`/clients/${id}`); // Use a rota apropriada
-};
-
 
 export default api;

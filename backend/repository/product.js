@@ -1,44 +1,44 @@
-const pool = require('../db');  // Importing the database connection
+const pool = require('../db');  // Importando a conexão com o banco de dados
 
 // Create Product
 exports.createProduct = async (data) => {
-    const { name, price } = data;
-    // Query to insert a new product into the 'products' table
-    const query = "INSERT INTO products (name, price) VALUES (?, ?)";
-    // Using the 'execute' method to run the query with the provided parameters
-    const [result] = await pool.execute(query, [name, price]);  // Using execute without .promise()
-    return result;  // Return the result of the operation (the created product)
+    const { name, price, quantity } = data; // Incluindo quantity
+    // Query para inserir um novo produto na tabela 'products'
+    const query = "INSERT INTO products (name, price, quantity) VALUES (?, ?, ?)";
+    // Executando a query com os parâmetros fornecidos
+    const [result] = await pool.execute(query, [name, price, quantity]);
+    return result; // Retornando o resultado da operação
 };
 
 // Update Product
 exports.updateProduct = async (id, data) => {
-    const { name, price } = data;
-    // Query to update an existing product's information
-    const query = "UPDATE products SET name = ?, price = ? WHERE id = ?";
-    // Using the 'execute' method to run the query with the provided parameters
-    const [result] = await pool.execute(query, [name, price, id]);  // Using execute without .promise()
-    return result;  // Return the result of the operation (the updated product)
+    const { name, price, quantity } = data; // Incluindo quantity
+    // Query para atualizar as informações de um produto existente
+    const query = "UPDATE products SET name = ?, price = ?, quantity = ? WHERE id = ?";
+    // Executando a query com os parâmetros fornecidos
+    const [result] = await pool.execute(query, [name, price, quantity, id]);
+    return result; // Retornando o resultado da operação
 };
 
 // Delete Product
 exports.deleteProduct = async (id) => {
-    // Query to delete a product from the 'products' table
+    // Query para deletar um produto da tabela 'products'
     const query = "DELETE FROM products WHERE id = ?";
-    // Using the 'execute' method to run the query with the product ID to be deleted
-    const [result] = await pool.execute(query, [id]);  // Using execute without .promise()
-    return result;  // Return the result of the operation (the deleted product)
+    // Executando a query com o ID do produto a ser deletado
+    const [result] = await pool.execute(query, [id]);
+    return result; // Retornando o resultado da operação
 };
 
 // Get Products
 exports.getProducts = async () => {
-    // Query to select all products from the 'products' table
+    // Query para selecionar todos os produtos da tabela 'products'
     const query = "SELECT * FROM products";
     try {
-        // Using the 'execute' method to run the query and get the results
-        const [products] = await pool.execute(query);  // Using execute without .promise()
-        return products;  // Return all the found products
+        // Executando a query para obter os produtos
+        const [products] = await pool.execute(query);
+        return products; // Retornando todos os produtos encontrados
     } catch (error) {
-        console.error("Error fetching products:", error);  // Log the error if it occurs
-        throw error;  // Pass the error to the controller for handling
+        console.error("Erro ao buscar produtos:", error); // Logando o erro, caso ocorra
+        throw error; // Lançando o erro para ser tratado pelo controlador
     }
 };

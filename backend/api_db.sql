@@ -40,5 +40,6 @@ CREATE TABLE purchase_items (
 
 INSERT INTO clients (name, email, birthDate, age) VALUES ('Test Client', 'test@example.com', '2000-01-01', 24);
 
-SELECT * FROM clients;
+ALTER TABLE products ADD COLUMN quantity INT NOT NULL DEFAULT 0;
+
 

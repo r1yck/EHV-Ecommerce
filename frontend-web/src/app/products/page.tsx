@@ -17,6 +17,7 @@ export default function Products() {
       const normalizedProducts = fetchedProducts.map((product) => ({
         ...product,
         price: Number(product.price), // Converte `price` para número, caso seja string
+        quantity: product.quantity || 0,
       }));
       setProducts(normalizedProducts);
     } catch (error) {

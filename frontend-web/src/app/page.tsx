@@ -58,21 +58,14 @@ const Main: React.FC = () => {
   // Função para salvar as alterações de um cliente
   const handleSaveEdit = async (updatedUser: User) => {
     try {
-      const response = await api.put(`/users/${updatedUser.id}`, updatedUser);
-
-      // Verifica se o backend retornou sucesso
-      if (response.status === 200 || response.status === 204) {
-        // Atualiza o estado local com os dados editados
-        setClientes((prevClientes) =>
-          prevClientes.map((cliente) =>
-            cliente.id === updatedUser.id ? { ...cliente, ...updatedUser } : cliente
-          )
-        );
-        alert('Cliente editado com sucesso!');
-        handleCloseEditModal();
-      } else {
-        throw new Error('Erro no backend');
-      }
+      await api.put(`/clients/${updatedUser.id}`, updatedUser);
+      setClientes((prevClientes) =>
+        prevClientes.map((cliente) =>
+          cliente.id === updatedUser.id ? { ...cliente, ...updatedUser } : cliente
+        )
+      );
+      alert('Cliente editado com sucesso!');
+      handleCloseEditModal();
     } catch (error) {
       console.error('Erro ao editar cliente:', error);
       alert('Erro ao editar cliente.');
@@ -80,11 +73,19 @@ const Main: React.FC = () => {
   };
 
   // Função para inativar um cliente
-  const handleInactivateClient = async (id: number) => {
+  const handleInactivateClient = async (id: string) => {
     try {
-      await api.delete(`/users/${id}`);
-      setClientes((prevClientes) => prevClientes.filter((cliente) => cliente.id !== id));
-      alert('Cliente inativado com sucesso!');
+      const response = await api.patch(`/clients/${id}/inactivate`);
+      if (response.status === 200) {
+        setClientes((prevClientes) =>
+          prevClientes.map((cliente) =>
+            cliente.id === id ? { ...cliente, isActive: false } : cliente
+          )
+        );
+        alert('Cliente inativado com sucesso!');
+      } else {
+        throw new Error('Erro ao inativar o cliente');
+      }
     } catch (error) {
       console.error('Erro ao inativar cliente:', error);
       alert('Erro ao inativar cliente.');
@@ -136,7 +137,9 @@ const Main: React.FC = () => {
 
       {/* Lista de clientes */}
       <div className="container m-auto grid grid-cols-3 gap-2 px-4">
-        {clientes.length > 0 ? (
+        {loading ? (
+          <p className="text-center text-gray-600 col-span-full">Carregando...</p>
+        ) : clientes.length > 0 ? (
           clientes.map((cliente) => (
             <div key={cliente.id} className="p-4 border rounded-lg shadow-sm bg-white">
               <h2 className="text-lg font-semibold text-gray-800">{cliente.name}</h2>
