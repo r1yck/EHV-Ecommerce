@@ -13,6 +13,7 @@ const Main: React.FC = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
+  // Função para buscar clientes
   const fetchClientes = async () => {
     setLoading(true);
     try {
@@ -29,44 +30,56 @@ const Main: React.FC = () => {
     fetchClientes();
   }, []);
 
+  // Função para criar um novo cliente
   const handleCreateUser = async (user: { name: string; email: string; birthDate: string }) => {
     try {
       await createUser(user);
       alert('Usuário criado com sucesso!');
       setIsCreateModalOpen(false);
-      fetchClientes(); // Atualiza a lista após criar
+      fetchClientes();
     } catch (error) {
       console.error('Erro ao criar usuário:', error);
       alert('Erro ao criar usuário.');
     }
   };
 
+  // Função para abrir o modal de edição
   const handleOpenEditModal = (cliente: User) => {
     setClienteEdicao(cliente);
     setIsEditModalOpen(true);
   };
 
+  // Função para fechar o modal de edição
   const handleCloseEditModal = () => {
     setClienteEdicao(null);
     setIsEditModalOpen(false);
   };
 
-  const handleSaveEdit = async (user: User) => {
+  // Função para salvar as alterações de um cliente
+  const handleSaveEdit = async (updatedUser: User) => {
     try {
-      await api.put(`/users/${user.id}`, user);
-      setClientes((prevClientes) =>
-        prevClientes.map((cliente) =>
-          cliente.id === user.id ? { ...cliente, ...user } : cliente
-        )
-      );
-      alert('Cliente editado com sucesso!');
-      handleCloseEditModal(); // Fecha a modal
+      const response = await api.put(`/users/${updatedUser.id}`, updatedUser);
+
+      // Verifica se o backend retornou sucesso
+      if (response.status === 200 || response.status === 204) {
+        // Atualiza o estado local com os dados editados
+        setClientes((prevClientes) =>
+          prevClientes.map((cliente) =>
+            cliente.id === updatedUser.id ? { ...cliente, ...updatedUser } : cliente
+          )
+        );
+        alert('Cliente editado com sucesso!');
+        handleCloseEditModal();
+      } else {
+        throw new Error('Erro no backend');
+      }
     } catch (error) {
       console.error('Erro ao editar cliente:', error);
       alert('Erro ao editar cliente.');
     }
   };
 
+  // Função para inativar um cliente
   const handleInactivateClient = async (id: number) => {
     try {
       await api.delete(`/users/${id}`);
@@ -80,6 +93,7 @@ const Main: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-green-300">
+      {/* Navbar */}
       <div className="flex flex-col justify-center items-center p-2">
         <nav className="flex w-3/4 justify-center gap-x-11 py-3 border-4 border-green-700 bg-green-400 rounded-full shadow-lg">
           <a href="#" className="text-lg font-medium text-black hover:text-emerald-700">
@@ -94,6 +108,7 @@ const Main: React.FC = () => {
         </nav>
       </div>
 
+      {/* Botão para criar cliente */}
       <div className="flex justify-end p-4">
         <button
           className="px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-blue-300"
@@ -103,6 +118,7 @@ const Main: React.FC = () => {
         </button>
       </div>
 
+      {/* Modais */}
       <ModalNovoCliente
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
@@ -118,6 +134,7 @@ const Main: React.FC = () => {
         />
       )}
 
+      {/* Lista de clientes */}
       <div className="container m-auto grid grid-cols-3 gap-2 px-4">
         {clientes.length > 0 ? (
           clientes.map((cliente) => (
@@ -148,6 +165,7 @@ const Main: React.FC = () => {
         )}
       </div>
 
+      {/* Footer */}
       <footer className="py-4 text-center bg-gray-500">
         <p className="text-sm text-black">Feito com ❤️ em Itapetinga</p>
       </footer>
